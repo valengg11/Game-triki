@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./triki.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>¡Crea tu propio Triki!</h1>
+    <input id="filas" type="text" placeholder="Ingresa tamaño del tablero" />
+    <button class="buttonJugar" onclick="startGame()">JUGAR</button>
+    <button class="buttonJugar" onclick="refrescar()">REINICIAR</button>
+    <div id="contenedor" class="contenedor"></div>
+    <script type="text/javascript">
+      var game = [];
+
+      function startGame() {
+        var filas = document.getElementById("filas").value;
+        var colms = filas;
+        game = crearMatriz(filas, colms);
+        console.log(game);
+        crearTabla(game);
+      }
+      function crearMatriz(filas, colms) {
+        let a = [];
+        let b = [];
+        for (var i = 0; i < filas; i++) {
+          b = [];
+          for (var j = 0; j < colms; j++) {
+            b = [...b, 0];
+          }
+          a = [...a, b];
+        }
+        return a;
+      }
+
+      function refrescar() {
+        location.reload();
+      }
+      function crearTabla(matriz) {
+        var body = document.getElementsByTagName("body")[0];
+        var tabla = document.createElement("table");
+        tabla.className = "tabla";
+        var tblBody = document.createElement("tbody");
+        var colms = matriz[0].length;
+        for (var i = 0; i < matriz[0].length; i++) {
+          var hilera = document.createElement("tr");
+          for (var j = 0; j < matriz[0].length; j++) {
+            var celda = document.createElement("td");
+            var boton = document.createElement("button");
+            boton.className = 'boton'
+            celda.appendChild(boton);
+            boton.innerHTML = ' '
+            boton.onclick = jugada;
+            hilera.appendChild(celda);
+          }
+          tblBody.appendChild(hilera);
+        }
+        tabla.appendChild(tblBody);
+        body.appendChild(tabla);
+        tabla.setAttribute("border", "2");
+      }
+      var turno = "o";
+      function jugada(e) {
+        if (turno == "o") {
+          turno = "x";
+        } else {
+          turno = "o";
+        }
+        console.log(e.target)
+        document.activeElement.innerHTML = turno;
+      }
+    </script>
+  </body>
+</html>

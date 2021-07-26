@@ -1,0 +1,58 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./triki.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>¡Crea tu propio Triki!</h1>
+    <input id="filas" type="text" placeholder="Ingresa tamaño del tablero" />
+    <button class="buttonJugar" onclick="crearMatriz()">JUGAR</button>
+    <button class="buttonJugar" onclick="refrescar()">REINICIAR</button>
+
+    <div id="contenedor" class="contenedor"></div>
+    <script type="text/javascript">
+      function refrescar() {
+        location.reload();
+      }
+      function crearMatriz(filas, colms) {
+        var filas = document.getElementById("filas").value;
+        var colms = filas;
+        function crearCajon() {
+          const CONTENT = document.getElementById("contenedor");
+          var ancho = filas * 100;
+          CONTENT.style.width = ancho + "px";
+          let newDiv = document.createElement("button");
+          newDiv.innerHTML = " ";
+          newDiv.className = "cajon";
+          newDiv.onclick = jugada;
+          CONTENT.appendChild(newDiv);
+        }
+        let a = [];
+        let b = [];
+        for (var i = 0; i < filas; i++) {
+          b = [];
+          for (var j = 0; j < colms; j++) {
+            b = [...b, crearCajon()];
+          }
+          a = [...a, b];
+        }
+        return {
+          a,
+        };
+      }
+      var turno = "o";
+      function jugada() {
+        if (turno == "o") {
+          turno = "x";
+        } else {
+          turno = "o";
+        }
+        document.activeElement.innerHTML = turno;
+      }
+    </script>
+  </body>
+</html> -->
