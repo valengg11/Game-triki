@@ -9,23 +9,37 @@
   </head>
   <body>
     <h1>¡Crea tu propio Triki!</h1>
-    <input id="filas" type="text" placeholder="Ingresa tamaño del tablero" />
+    <select id="dropDown">
+      <option value="0">Tamaño del tablero</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+    </select>
     <button class="buttonJugar" onclick="startGame()">JUGAR</button>
-    <button class="buttonJugar" onclick="refrescar()">REINICIAR</button>
     <div id="contenedor" class="contenedor"></div>
     <script type="text/javascript">
       var game = [];
+      var dimGame;
+      var sumaFila;
+      var sumaCol;
+      var sumaDiag1;
+      var sumaDiag2;
 
       function startGame() {
-        var filas = document.getElementById("filas").value;
+        var list = document.getElementById("dropDown");
+        var filas = parseInt(list.options[list.selectedIndex].text);
         var colms = filas;
         game = crearMatriz(filas, colms);
-        console.log(game);
+        dimGame = game[0].length;
         crearTabla(game);
+        document.activeElement.disabled = true;
       }
+
       function crearMatriz(filas, colms) {
-        let a = [];
-        let b = [];
+        var a = [];
+        var b = [];
         for (var i = 0; i < filas; i++) {
           b = [];
           for (var j = 0; j < colms; j++) {
@@ -35,24 +49,25 @@
         }
         return a;
       }
-
-      function refrescar() {
-        location.reload();
-      }
+      var tabla;
+      var boton;
       function crearTabla(matriz) {
+        var buttonMatrix = [];
         var body = document.getElementsByTagName("body")[0];
-        var tabla = document.createElement("table");
+        tabla = document.createElement("table");
         tabla.className = "tabla";
         var tblBody = document.createElement("tbody");
-        var colms = matriz[0].length;
         for (var i = 0; i < matriz[0].length; i++) {
           var hilera = document.createElement("tr");
           for (var j = 0; j < matriz[0].length; j++) {
             var celda = document.createElement("td");
-            var boton = document.createElement("button");
-            boton.className = 'boton'
+            boton = document.createElement("button");
+            boton.className = "boton";
+            boton.id = "disable";
+            boton.setAttribute("posX", i);
+            boton.setAttribute("posY", j);
             celda.appendChild(boton);
-            boton.innerHTML = ' '
+            boton.innerHTML = " ";
             boton.onclick = jugada;
             hilera.appendChild(celda);
           }
@@ -62,15 +77,111 @@
         body.appendChild(tabla);
         tabla.setAttribute("border", "2");
       }
+
+      function extraerFila(fila) {
+        var e = [];
+        for (var i = 0; i < dimGame; i++) {
+          var numero = game[fila][i];
+          e = [...e, numero];
+        }
+        return e;
+      }
+
+      function extraerCol(col) {
+        var e = [];
+        for (var i = 0; i < dimGame; i++) {
+          var numero = game[i][col];
+          e = [...e, numero];
+        }
+        return e;
+      }
+
+      function extraerDiag(diag) {
+        var e = [];
+        if (diag === 1) {
+          for (var i = 0; i < dimGame; i++) {
+            var numero = game[i][i];
+            e = [...e, numero];
+          }
+        } else if (diag === 2) {
+          for (var i = 0; i < dimGame; i++) {
+            var px = dimGame - 1 - i;
+            var numero = game[px][i];
+            e = [...e, numero];
+          }
+        }
+        return e;
+      }
+
+      function sumar(array) {
+        let suma = 0;
+        for (let i = 0; i < array.length; i++) {
+          suma += array[i];
+        }
+        return suma;
+      }
+
       var turno = "o";
-      function jugada(e) {
+      function jugada(event) {
+        var x = parseInt(event.target.getAttribute("posx"));
+        var y = parseInt(event.target.getAttribute("posy"));
+        if (game[x][y] !== 0) {
+          return;
+        }
         if (turno == "o") {
           turno = "x";
+          game[x][y] = -1;
         } else {
           turno = "o";
+          game[x][y] = 1;
         }
-        console.log(e.target)
+        sumaFila = sumar(extraerFila(x));
+        sumaCol = sumar(extraerCol(y));
+        sumaDiag1 = sumar(extraerDiag(1));
+        sumaDiag2 = sumar(extraerDiag(2));
+        console.log(game[x][y]);
         document.activeElement.innerHTML = turno;
+        winner(sumaFila);
+        winner(sumaCol);
+        winner(sumaDiag1);
+        winner(sumaDiag2);
+      }
+      function disableButtons() {
+        console.log(document.getElementById('disable').disabled);
+        document.getElementById('disable').disabled = true
+        // disabled.disabled = true;
+        // console.log(disabled.disabled)
+      }
+      function reloadFunction() {
+        location.reload();
+      }
+      function showReload() {
+        var reloadButton = document.createElement("button");
+        reloadButton.onclick = reloadFunction;
+        reloadButton.className = "buttonJugar";
+        reloadButton.innerHTML = "REINICIAR";
+        var body = document.getElementsByTagName("body")[0];
+        body.appendChild(reloadButton);
+      }
+
+      function winner(sumatoria) {
+        var body = document.getElementsByTagName("body")[0];
+        message = document.createElement("h2");
+        if (sumatoria === -dimGame) {
+          disableButtons()
+          message.innerHTML = "El ganador es el jugador x !!!";
+          setTimeout(showReload, 1000);
+          
+          // boton.removeEventListener('click', )
+
+
+          // document.getElementById('disable').disabled = true
+        } else if (sumatoria === dimGame) {
+          message.innerHTML = "El ganador es el jugador o !!!";
+          setTimeout(showReload, 1000);
+        } 
+        
+        body.appendChild(message);
       }
     </script>
   </body>

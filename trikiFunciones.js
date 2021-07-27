@@ -17,22 +17,25 @@ function extraerCol(matriz, col) {
     var numero = matriz[i][col];
     e = [...e, numero];
   }
-
   return e;
 }
 
 /* extraer diagonal  1 = diagonal principal.   2 = diagonal secundaria  */
 
-function extraerDiag(matriz) {
-  var d1 = [];
-  var d2 = [];
-  for (var i = 0; i < matriz[0].length; i++) {
-    var numero1 = matriz[i][i];
-    d1 = [...d1, numero1];
-    var numero2 = matriz[2 - i][i];
-    d2 = [...d2, numero2];
+function extraerDiag(matriz, diag) {
+  var e = [];
+  if (diag == 1) {
+    for (var i = 0; i < matriz[0].length; i++) {
+      var numero = matriz[i][i];
+      e = [...e, numero];
+    }
+  } else {
+    for (var i = 0; i < matriz[0].length; i++) {
+      var numero = matriz[matriz.length - i][i];
+      e = [...e, numero];
+    }
   }
-  return d1, d2;
+  return e;
 }
 
 let triki = [
@@ -52,11 +55,6 @@ function sumar(arreglo) {
   arreglo.forEach(function (numero) {
     suma += numero;
   });
-  if (suma === -3) {
-    alert("Gana x");
-  } else {
-    alert("Gana o");
-  }
   return suma;
 }
 
