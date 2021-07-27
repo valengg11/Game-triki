@@ -63,7 +63,6 @@
             var celda = document.createElement("td");
             boton = document.createElement("button");
             boton.className = "boton";
-            boton.id = "disable";
             boton.setAttribute("posX", i);
             boton.setAttribute("posY", j);
             celda.appendChild(boton);
@@ -148,10 +147,11 @@
         empate();
       }
       function disableButtons() {
-        console.log(document.getElementById("disable").disabled);
-        document.getElementById("disable").disabled = true;
-        // disabled.disabled = true;
-        // console.log(disabled.disabled)
+        const buttons = document.querySelectorAll(".boton");
+        buttons.forEach((element) => {
+          element.disabled = true;
+          element.className = 'disable'
+        });
       }
       function reloadFunction() {
         location.reload();
@@ -186,11 +186,11 @@
         message = document.createElement("h2");
         if (sumatoria === -dimGame) {
           disableButtons();
-          message.innerHTML = "El ganador es el jugador x !!!";
+          message.innerHTML = "Gana el jugador x !!!";
           setTimeout(showReload, 1000);
         } else if (sumatoria === dimGame) {
           disableButtons();
-          message.innerHTML = "El ganador es el jugador o !!!";
+          message.innerHTML = "Gana el jugador o !!!";
           setTimeout(showReload, 1000);
         }
         body.appendChild(message);

@@ -46,7 +46,17 @@ td{
     box-shadow: none;
     font-size: 50px;
     text-align: center;
-    z-index: 100;
+}
+
+.disable{
+    background: black;
+    color: gray;
+    width: 100px;
+    height: 100px;
+    border: none;
+    box-shadow: none;
+    font-size: 50px;
+    text-align: center;
 }
 
 
