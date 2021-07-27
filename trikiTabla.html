@@ -20,6 +20,7 @@
     <button class="buttonJugar" onclick="startGame()">JUGAR</button>
     <div id="contenedor" class="contenedor"></div>
     <script type="text/javascript">
+      var body = document.getElementsByTagName("body")[0];
       var game = [];
       var dimGame;
       var sumaFila;
@@ -53,7 +54,6 @@
       var boton;
       function crearTabla(matriz) {
         var buttonMatrix = [];
-        var body = document.getElementsByTagName("body")[0];
         tabla = document.createElement("table");
         tabla.className = "tabla";
         var tblBody = document.createElement("tbody");
@@ -145,10 +145,11 @@
         winner(sumaCol);
         winner(sumaDiag1);
         winner(sumaDiag2);
+        empate();
       }
       function disableButtons() {
-        console.log(document.getElementById('disable').disabled);
-        document.getElementById('disable').disabled = true
+        console.log(document.getElementById("disable").disabled);
+        document.getElementById("disable").disabled = true;
         // disabled.disabled = true;
         // console.log(disabled.disabled)
       }
@@ -160,27 +161,38 @@
         reloadButton.onclick = reloadFunction;
         reloadButton.className = "buttonJugar";
         reloadButton.innerHTML = "REINICIAR";
-        var body = document.getElementsByTagName("body")[0];
         body.appendChild(reloadButton);
+      }
+      function empate() {
+        var sum = 0;
+        for (var i = 0; i < dimGame; i++) {
+          for (var j = 0; j < dimGame; j++) {
+            if (game[i][j] !== 0) {
+              sum += 1;
+              console.log(sum);
+            }
+          }
+        }
+        if (sum === dimGame * dimGame) {
+          disableButtons();
+          var messageTie = document.createElement("h2");
+          messageTie.innerHTML = "El juego queda empatado!";
+          body.appendChild(messageTie);
+          setTimeout(showReload, 1000);
+        }
       }
 
       function winner(sumatoria) {
-        var body = document.getElementsByTagName("body")[0];
         message = document.createElement("h2");
         if (sumatoria === -dimGame) {
-          disableButtons()
+          disableButtons();
           message.innerHTML = "El ganador es el jugador x !!!";
           setTimeout(showReload, 1000);
-          
-          // boton.removeEventListener('click', )
-
-
-          // document.getElementById('disable').disabled = true
         } else if (sumatoria === dimGame) {
+          disableButtons();
           message.innerHTML = "El ganador es el jugador o !!!";
           setTimeout(showReload, 1000);
-        } 
-        
+        }
         body.appendChild(message);
       }
     </script>
