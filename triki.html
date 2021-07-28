@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./triki.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      var a;
+      function triki(value) {
+        a = [];
+        var b = [];
+        for (var i = 0; i < value; i++) {
+          b = [];
+          for (var j = 0; j < value; j++) {
+            b = [...b, 0];
+          }
+          a = [...a, b];
+        }
+        return a;
+      }
+      var piece = "o";
+      function play(x, y) {
+        if (a[x][y] !== 0) {
+          return;
+        }
+        if (piece == "o") {
+          piece = "x";
+          a[x][y] = piece;
+        } else {
+          piece = "o";
+          a[x][y] = piece;
+        }
+        sumaFila = sumar(extraerFila(x));
+        sumaCol = sumar(extraerCol(y));
+        sumaDiag1 = sumar(extraerDiag(1));
+        sumaDiag2 = sumar(extraerDiag(2));
+        var rows = [sumaFila, sumaCol, sumaDiag1, sumaDiag2];
+        rows.forEach((row) => {
+          var win = winner(row);
+          switch (win) {
+            case "x":
+            case "o":
+            case "=":
+              showMessage(win);
+              return;
+          }
+        });
+        return a;
+      }
+      function extraerFila(fila) {
+        var e = []
+        e = a[fila]
+        // console.log(e)
+        return e;
+      }
+
+      function extraerCol(col) {
+        var e = [];
+        for (var i = 0; i < a.length; i++) {
+          var numero = a[i][col];
+          e = [...e, numero];
+        }
+        // console.log(e)
+        return e;
+      }
+
+      function extraerDiag(diag) {
+        var e = [];
+        if (diag === 1) {
+          for (var i = 0; i < a.length; i++) {
+            var numero = a[i][i];
+            e = [...e, numero];
+          }
+        } else if (diag === 2) {
+          for (var i = 0; i < a.length; i++) {
+            var px = a.length - 1 - i;
+            var numero = a[px][i];
+            e = [...e, numero];
+          }
+        }
+        return e;
+      }
+
+      function sumar(array) {
+        let suma = 0;
+        var val; 
+        for (let i = 0; i < array.length; i++) {
+          if(array[i] == 'x'){
+            val = -1
+          } else if (array[i] == 'o'){
+            val = 1
+          } else {
+            val = 0
+          }
+          suma += val;
+        }
+        // console.log(suma)
+        return suma;
+      }
+
+      function winner(sumatoria) {
+        if (sumatoria === -a.length) {
+          return "x";
+        } else if (sumatoria === a.length) {
+          return "o";
+        }
+        // var tie = empate();
+        // if (tie) {
+        //   return "=";
+        // }
+        // return "";
+      }
+
+      function empate() {
+        for (var i = 0; i < a.length; i++) {
+          for (var j = 0; j < a.length; j++) {
+            if (game[i][j] == 0) {
+              return false;
+            }
+          }
+        }
+        return true;
+      }
+
+      function showMessage(msg) {
+        var message;
+        if (msg === "x") {
+          message = "Gana el jugador x !!!";
+        } else if (msg === "o") {
+          message = "Gana el jugador o !!!";
+        } else {
+          message = "El juego queda empatado!";
+        }
+        console.log(message);
+      }
+    </script>
+  </body>
+</html>
