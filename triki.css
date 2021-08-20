@@ -11,7 +11,6 @@ select {
     background: aquamarine ;
 }
 
-
 .buttonJugar{
     background: black;
     color: aquamarine;
@@ -48,6 +47,8 @@ td{
     box-shadow: none;
     font-size: 50px;
     text-align: center;
+    border-radius: 15px;
+    margin: 5px;
 }
 
 .disable{
